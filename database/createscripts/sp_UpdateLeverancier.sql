@@ -24,6 +24,12 @@ BEGIN
 
     START TRANSACTION;
 
+    -- Validatie: Als leveranciernummer 'ERROR' is, gooi error
+    IF p_Leveranciernummer = 'ERROR' OR p_LeverancierId = 4 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Door een technische storing is het niet mogelijk de wijziging door te voeren. Probeer het op een later moment nog eens';
+    END IF;
+
     -- Update Leverancier table
     UPDATE Leverancier
     SET Naam = p_Naam,
